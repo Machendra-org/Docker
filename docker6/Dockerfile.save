@@ -1,0 +1,10 @@
+FROM ubuntu
+MAINTAINER Machendra
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update
+RUN apt-get install apache2 -y
+RUN
+COPY index.html /var/www/html/
+EXPOSE 80
+CMD [ "/usr/sbin/httpd","-D","FOREGROUND" ]
+
