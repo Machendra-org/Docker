@@ -1,0 +1,22 @@
+FROM ubuntu
+RUN apt update
+RUN apt install wget -y
+RUN apt install curl -y
+RUN apt install unzip -y
+RUN apt install default-jdk -y
+RUN apt install git -y
+RUN apt install maven -y
+RUN git clone https://github.com/Machendra-org/Maven_Projects.git
+WORKDIR /Maven_Projects
+RUN git checkout main
+RUN mvn clean install
+RUN wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.58/bin/apache-tomcat-9.0.58.zip
+RUN unzip apache-tomcat-9.0.58.zip
+WORKDIR /Maven_Projects/target/
+VOLUME /machendravol/Maven_Projects/target/
+RUN cp /Maven_Projects/target/webApp.war /Maven_Projects/apache-tomcat-9.0.58/webapps/
+COPY tomcat-users.xml /Maven_Projects/apache-tomcat-9.0.58/conf/ 
+EXPOSE 8080
+RUN chmod +x /Maven_Projects/apache-tomcat-9.0.58/bin/catalina.sh
+CMD [ "/Maven_Projects/apache-tomcat-9.0.58/bin/catalina.sh", "run" ]
+
